@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ziprent — Efficiency Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy: #1B2B4B;
+  --navy-mid: #2D4270;
+  --navy-light: #EEF2FA;
+  --coral: #FF6B35;
+  --coral-light: #FFF0EB;
+  --teal: #00B894;
+  --teal-light: #E6F9F5;
+  --bg: #F7F8FC;
+  --white: #FFFFFF;
+  --text: #1B2B4B;
+  --muted: #6B7A99;
+  --hint: #A0ABBE;
+  --border: #E4E9F2;
+  --border2: #C8D3E8;
+  --font: 'Plus Jakarta Sans', sans-serif;
+  --radius: 10px;
+  --radius-lg: 16px;
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 14px; line-height: 1.6; min-height: 100vh; }
+
+/* HEADER */
+.header {
+  background: var(--navy);
+  padding: 0 2rem;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 16px;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+.logo-mark {
+  width: 32px; height: 32px;
+  background: var(--coral);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; color: #fff;
+}
+.header-badge {
+  background: rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.7);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+/* TABS */
+.tabs-bar {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+}
+.tab {
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 16px 18px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+  transition: all 0.15s;
+  margin-bottom: -1px;
+}
+.tab:hover { color: var(--navy); }
+.tab.active { color: var(--navy); border-bottom-color: var(--coral); font-weight: 600; }
+
+/* MAIN */
+.main { padding: 2rem; max-width: 1200px; margin: 0 auto; }
+.section { display: none; }
+.section.active { display: block; animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+/* SECTION HEADER */
+.sec-head {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.sec-head h2 { font-size: 22px; font-weight: 700; color: var(--navy); letter-spacing: -0.02em; }
+.sec-head p { font-size: 13px; color: var(--muted); }
+
+/* METRIC GRID */
+.mg { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 1.5rem; }
+.mc {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  display: flex; flex-direction: column; gap: 6px;
+  transition: box-shadow 0.15s;
+}
+.mc:hover { box-shadow: 0 4px 16px rgba(27,43,75,0.08); }
+.mc .lb { font-size: 11px; font-weight: 600; color: var(--hint); text-transform: uppercase; letter-spacing: 0.06em; }
+.mc .vl { font-size: 26px; font-weight: 700; color: var(--navy); letter-spacing: -0.02em; line-height: 1.1; }
+.mc .sb { font-size: 12px; color: var(--hint); }
+.mc .dl { font-size: 12px; font-weight: 600; }
+.pos { color: var(--teal); }
+.neg { color: var(--coral); }
+
+/* CHART GRID */
+.cg { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
+.cc {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+}
+.cc.full { grid-column: 1 / -1; }
+.cc h3 { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 1rem; }
+.leg { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+.leg span { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); font-weight: 500; }
+.dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+
+/* TABLE */
+.tw { margin-bottom: 1.5rem; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; font-size: 11px; font-weight: 600; color: var(--hint); text-transform: uppercase; letter-spacing: 0.06em; padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--bg); white-space: nowrap; }
+td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text); font-size: 13px; vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: var(--navy-light); }
+
+/* PILLS */
+.pill { display: inline-flex; align-items: center; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+.ppos { background: var(--teal-light); color: var(--teal); }
+.pneg { background: var(--coral-light); color: var(--coral); }
+.pneu { background: var(--navy-light); color: var(--muted); }
+
+/* BADGES */
+.badge { display: inline-block; font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 600; margin-bottom: 8px; }
+.blv { background: var(--teal-light); color: var(--teal); }
+.bwp { background: #FFF8E6; color: #B07D00; }
+
+/* SECTION LABEL */
+.sl { font-size: 11px; font-weight: 700; color: var(--hint); text-transform: uppercase; letter-spacing: 0.08em; margin: 1.75rem 0 0.875rem; }
+
+/* CARD GRID */
+.wg { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; margin-bottom: 1.5rem; }
+.wi {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.25rem;
+  transition: box-shadow 0.15s;
+}
+.wi:hover { box-shadow: 0 4px 16px rgba(27,43,75,0.08); }
+.wi .wt { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+.wi .wd { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+/* TWO COL */
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
+.card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; }
+.card h3 { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 1rem; }
+.il { display: flex; flex-direction: column; gap: 10px; }
+.it { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--muted); line-height: 1.5; }
+.it-icon { width: 18px; height: 18px; background: var(--teal-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; color: var(--teal); font-size: 11px; font-weight: 700; }
+.vc { background: var(--bg); border-radius: var(--radius); padding: 1rem; margin-top: 1rem; border: 1px solid var(--border); }
+.vt { font-size: 11px; font-weight: 700; color: var(--hint); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+.vr { display: flex; align-items: center; gap: 10px; padding: 7px 0; font-size: 13px; color: var(--text); border-bottom: 1px solid var(--border); font-weight: 500; }
+.vr:last-child { border-bottom: none; }
+.vr-num { font-size: 11px; font-weight: 700; color: var(--hint); min-width: 20px; }
+.ib { background: var(--bg); border-radius: var(--radius); padding: 0.875rem 1rem; font-size: 13px; color: var(--muted); line-height: 1.6; margin-top: 10px; border: 1px solid var(--border); }
+
+/* REPUTATION */
+.rg { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 12px; margin-bottom: 1.5rem; }
+.ri { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; text-align: center; }
+.ri .rc { font-size: 11px; font-weight: 600; color: var(--hint); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+.ri .rs { font-size: 22px; font-weight: 700; color: var(--navy); letter-spacing: -0.02em; }
+.ri .rr { font-size: 11px; color: var(--hint); margin-top: 2px; }
+
+/* KPI */
+.kg { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 1.5rem; }
+.ki { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; }
+.ki .kt { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+.ki .kd { font-size: 12px; color: var(--muted); }
+
+/* FOOTER */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2rem;
+  background: var(--white);
+}
+.footer p { font-size: 12px; color: var(--hint); }
+
+@media (max-width: 640px) {
+  .main { padding: 1rem; }
+  .cg, .two { grid-template-columns: 1fr; }
+  .cg .cc.full { grid-column: 1; }
+  .header { padding: 0 1rem; }
+  .tabs-bar { padding: 0 0.5rem; }
+  .sec-head { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">
+    <div class="logo-mark">Z</div>
+    Ziprent Ops
+  </div>
+  <div class="header-badge">Efficiency update · May 2026</div>
+</header>
+
+<nav class="tabs-bar">
+  <button class="tab active" onclick="show('relations',this)">Relations</button>
+  <button class="tab" onclick="show('repairs',this)">Repairs</button>
+  <button class="tab" onclick="show('transitions',this)">Transitions</button>
+  <button class="tab" onclick="show('leasing',this)">Leasing</button>
+  <button class="tab" onclick="show('escalations',this)">Escalations</button>
+</nav>
+
+<main class="main">
+
+<!-- RELATIONS -->
+<div id="relations" class="section active">
+  <div class="sec-head">
+    <div><h2>Relations Management</h2><p>*Partial month data as of 5/27</p></div>
+  </div>
+  <div class="mg">
+    <div class="mc"><span class="lb">Resolution — Apr</span><span class="vl">8h 53m</span><span class="dl pos">▼ from 1d 4h in Mar</span></div>
+    <div class="mc"><span class="lb">Resolution — May*</span><span class="vl">10h 43m</span><span class="dl neg">▲ outages + holidays</span></div>
+    <div class="mc"><span class="lb">Best reply time</span><span class="vl">2h 47m</span><span class="sb">April</span></div>
+    <div class="mc"><span class="lb">Peak conversations</span><span class="vl">22,497</span><span class="sb">March</span></div>
+  </div>
+  <div class="cg">
+    <div class="cc">
+      <h3>Avg resolution time (hours)</h3>
+      <div class="leg"><span><span class="dot" style="background:#1B2B4B"></span>Resolution hrs</span></div>
+      <div style="position:relative;height:200px"><canvas id="rRelRes" role="img" aria-label="Resolution time Feb 30h Mar 28h Apr 8.9h May 10.7h">Feb 30h Mar 28h Apr 8.9h May 10.7h</canvas></div>
+    </div>
+    <div class="cc">
+      <h3>Avg reply time (hours)</h3>
+      <div class="leg"><span><span class="dot" style="background:#00B894"></span>Reply hrs</span></div>
+      <div style="position:relative;height:200px"><canvas id="rRelRep" role="img" aria-label="Reply time Feb 3.9h Mar 4.1h Apr 2.8h May 5.9h">Feb 3.9h Mar 4.1h Apr 2.8h May 5.9h</canvas></div>
+    </div>
+    <div class="cc full">
+      <h3>Conversation volume</h3>
+      <div class="leg"><span><span class="dot" style="background:#A0ABBE"></span>Conversations</span></div>
+      <div style="position:relative;height:160px"><canvas id="rRelConv" role="img" aria-label="Conversations Feb 17950 Mar 22497 Apr 21821 May 19049">Feb 17950 Mar 22497 Apr 21821 May 19049</canvas></div>
+    </div>
+  </div>
+  <div class="sl">Live automations</div>
+  <div class="wg">
+    <div class="wi"><span class="badge blv">Live</span><div class="wt">Party Finder</div><div class="wd">Auto-adds property tags, links, and auto-draft V2.</div></div>
+    <div class="wi"><span class="badge blv">Live</span><div class="wt">Follow-up Generator</div><div class="wd">Determines follow-up need and specifies what to address.</div></div>
+    <div class="wi"><span class="badge blv">Live</span><div class="wt">Standardized snoozes</div><div class="wd">8am wave system with 2nd/3rd waves for urgent items.</div></div>
+    <div class="wi"><span class="badge blv">Live</span><div class="wt">Manager views</div><div class="wd">Inbox split: Active Response, Follow-ups, Showings, Calls, Fraud.</div></div>
+    <div class="wi"><span class="badge blv">Live</span><div class="wt">Helpful Links</div><div class="wd">Auto-adds Showings, Listing, and Application links.</div></div>
+    <div class="wi"><span class="badge blv">Live</span><div class="wt">Auto-Review: Visit Feedback</div><div class="wd">AI flags potential habitability issues from visit feedback.</div></div>
+  </div>
+  <div class="sl">Work in progress</div>
+  <div class="wg">
+    <div class="wi"><span class="badge bwp">In progress</span><div class="wt">Better Jenny + task lists</div><div class="wd">Dev testing panel — goal is auto-close and structured task routing.</div></div>
+    <div class="wi"><span class="badge bwp">In progress</span><div class="wt">Appointment form</div><div class="wd">Owner→tenant availability sequence, removing the team as middleman.</div></div>
+    <div class="wi"><span class="badge bwp">In progress</span><div class="wt">Better follow-up process</div><div class="wd">Stricter guidelines + automated follow-ups via Send Later, Tags, Rules.</div></div>
+  </div>
+</div>
+
+<!-- REPAIRS -->
+<div id="repairs" class="section">
+  <div class="sec-head">
+    <div><h2>Repairs Department</h2><p>*Partial month data as of 5/27</p></div>
+  </div>
+  <div class="mg">
+    <div class="mc"><span class="lb">Repairs done — Apr</span><span class="vl">966</span><span class="dl pos">▲ best month (32/day)</span></div>
+    <div class="mc"><span class="lb">Best reply time</span><span class="vl">13h 19m</span><span class="sb">April</span></div>
+    <div class="mc"><span class="lb">Best AAR</span><span class="vl">$13,306</span><span class="sb">April</span></div>
+    <div class="mc"><span class="lb">Avg TTC — May*</span><span class="vl">20.79d</span><span class="sb">Partial month</span></div>
+  </div>
+  <div class="cg">
+    <div class="cc">
+      <h3>Repairs completed per month</h3>
+      <div class="leg"><span><span class="dot" style="background:#1B2B4B"></span>Repairs done</span></div>
+      <div style="position:relative;height:200px"><canvas id="rRepDone" role="img" aria-label="Repairs Feb 836 Mar 917 Apr 966 May 879">Feb 836 Mar 917 Apr 966 May 879</canvas></div>
+    </div>
+    <div class="cc">
+      <h3>AAR ($)</h3>
+      <div class="leg"><span><span class="dot" style="background:#00B894"></span>AAR</span></div>
+      <div style="position:relative;height:200px"><canvas id="rRepAar" role="img" aria-label="AAR Feb 10390 Mar 9287 Apr 13306 May 9973">Feb $10,390 Mar $9,287 Apr $13,306 May $9,973</canvas></div>
+    </div>
+    <div class="cc full">
+      <h3>Avg reply time (hrs) — lower is better</h3>
+      <div class="leg"><span><span class="dot" style="background:#FF6B35"></span>Reply time</span></div>
+      <div style="position:relative;height:160px"><canvas id="rRepRep" role="img" aria-label="Reply time Feb 16.25h Mar 15.58h Apr 13.32h May 18.62h">Feb 16.25h Mar 15.58h Apr 13.32h May 18.62h</canvas></div>
+    </div>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Month</th><th>Repairs</th><th>Per day</th><th>Reply time</th><th>TTC (days)</th><th>Opened</th><th>AAR</th></tr></thead>
+      <tbody>
+        <tr><td>Feb</td><td>836</td><td>29</td><td>16h 15m</td><td>20.73</td><td>1,007</td><td>$10,390</td></tr>
+        <tr><td>Mar</td><td>917</td><td>29</td><td>15h 35m</td><td>21.83</td><td>1,119</td><td>$9,287</td></tr>
+        <tr><td>Apr</td><td>966</td><td>32</td><td>13h 19m</td><td>20.94</td><td>1,162</td><td>$13,306</td></tr>
+        <tr><td>May*</td><td>879</td><td>32</td><td>18h 37m</td><td>20.79</td><td>1,136</td><td>$9,973</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="sl">Work in progress</div>
+  <div class="wg">
+    <div class="wi"><span class="badge bwp">Planned</span><div class="wt">Appointment setter</div><div class="wd">Repurposing tool to coordinate with external vendors and reduce delays.</div></div>
+    <div class="wi"><span class="badge bwp">Planned</span><div class="wt">Task boards + operator system</div><div class="wd">Jenny-style boards plus job assignment and escalation management.</div></div>
+    <div class="wi"><span class="badge bwp">Planned</span><div class="wt">Repair sets</div><div class="wd">Primary thread for high-volume properties via Linked tag.</div></div>
+    <div class="wi"><span class="badge bwp">Planned</span><div class="wt">Vendor SOS + follow-up tools</div><div class="wd">Automated outreach plus Follow-up Generator and Auto-Draft V2.</div></div>
+  </div>
+</div>
+
+<!-- TRANSITIONS -->
+<div id="transitions" class="section">
+  <div class="sec-head">
+    <div><h2>Transitions — Turnovers / Renewals</h2><p>May 2026</p></div>
+  </div>
+  <div class="mg">
+    <div class="mc"><span class="lb">Turnovers Mar→May</span><span class="vl">−6.9%</span><span class="dl pos">Faster response</span></div>
+    <div class="mc"><span class="lb">Renewals Mar→May</span><span class="vl">+19.9%</span><span class="dl neg">Slower response</span></div>
+    <div class="mc"><span class="lb">SD returns gain</span><span class="vl">22.8%</span><span class="dl pos">▼ 13.1 → 10.1 days</span></div>
+    <div class="mc"><span class="lb">3-month revenue</span><span class="vl">$462K</span><span class="sb">Mar–May combined</span></div>
+  </div>
+  <div class="cg">
+    <div class="cc">
+      <h3>SD returns (days) — lower is better</h3>
+      <div class="leg"><span><span class="dot" style="background:#1B2B4B"></span>Days to return</span></div>
+      <div style="position:relative;height:200px"><canvas id="rTrSD" role="img" aria-label="SD returns Mar 13.12 Apr 11.86 May 10.13">Mar 13.12d Apr 11.86d May 10.13d</canvas></div>
+    </div>
+    <div class="cc">
+      <h3>Renewals signed vs PMAs</h3>
+      <div class="leg"><span><span class="dot" style="background:#1B2B4B"></span>Signed</span><span><span class="dot" style="background:#C8D3E8"></span>PMAs</span></div>
+      <div style="position:relative;height:200px"><canvas id="rTrRen" role="img" aria-label="Renewals signed vs PMAs Mar Apr May">Signed Mar 214 Apr 234 May 227. PMAs Mar 289 Apr 234 May 218</canvas></div>
+    </div>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Metric</th><th>March</th><th>April</th><th>May</th><th>Efficiency gain</th></tr></thead>
+      <tbody>
+        <tr><td>SD Returns</td><td>13.12d</td><td>11.86d</td><td>10.13d</td><td><span class="pill ppos">22.8% faster</span></td></tr>
+        <tr><td>SD Calculation Sent</td><td>7.19d</td><td>6.27d</td><td>6.8d</td><td><span class="pill ppos">5.4% faster</span></td></tr>
+        <tr><td>Walkthrough Review</td><td>7h 24m</td><td>23h 48m</td><td>8h 34m</td><td><span class="pill pneg">15.8% slower</span></td></tr>
+        <tr><td>Renewals Signed</td><td>214</td><td>234</td><td>227</td><td>—</td></tr>
+        <tr><td>Renewal PMAs</td><td>289</td><td>234</td><td>218</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="mg">
+    <div class="mc"><span class="lb">Turnovers peak</span><span class="vl">$80,124</span><span class="sb">April · 9% of ZR revenue</span></div>
+    <div class="mc"><span class="lb">Renewals peak</span><span class="vl">$57,966</span><span class="sb">April · 6% of ZR revenue</span></div>
+    <div class="mc"><span class="lb">Staff flagged</span><span class="vl">3</span><span class="dl pos">All improving</span></div>
+    <div class="mc"><span class="lb">Turnovers messages</span><span class="vl">1,534</span><span class="dl pos">▲ from 1,402</span></div>
+  </div>
+</div>
+
+<!-- LEASING -->
+<div id="leasing" class="section">
+  <div class="sec-head">
+    <div><h2>Leasing</h2><p>May 2026</p></div>
+  </div>
+  <div class="mg">
+    <div class="mc"><span class="lb">Best TP revenue</span><span class="vl">$282K</span><span class="sb">April</span></div>
+    <div class="mc"><span class="lb">Apr &amp; May leases</span><span class="vl">234</span><span class="dl pos">Held steady in May</span></div>
+    <div class="mc"><span class="lb">Best leases/day</span><span class="vl">7.8</span><span class="sb">April · goal: 7/day</span></div>
+    <div class="mc"><span class="lb">Best resolution</span><span class="vl">2d 6h</span><span class="sb">April · −52.6% vs Mar</span></div>
+  </div>
+  <div class="tw">
+    <table style="table-layout:fixed">
+      <colgroup><col style="width:12%"><col style="width:18%"><col style="width:18%"><col style="width:22%"><col style="width:15%"><col style="width:15%"></colgroup>
+      <thead><tr><th>Period</th><th>TP Revenue</th><th>Resolution time</th><th>MoM delta</th><th>Leases</th><th>Per day</th></tr></thead>
+      <tbody>
+        <tr><td>March</td><td>$247,403.78</td><td>4 days, 18 hours</td><td><span class="pill pneu">— baseline</span></td><td>214</td><td>6.9</td></tr>
+        <tr><td>April</td><td>$282,029.15</td><td>2 days, 6 hours</td><td><span class="pill ppos">▼ −60h (−52.6%)</span></td><td>234</td><td>7.8</td></tr>
+        <tr><td>May</td><td>$250,752.05</td><td>2 days, 15 hours</td><td><span class="pill pneg">▲ +9h (+16.7%)</span></td><td>234</td><td>7.5</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="cg">
+    <div class="cc">
+      <h3>TP revenue</h3>
+      <div class="leg"><span><span class="dot" style="background:#00B894"></span>Revenue</span></div>
+      <div style="position:relative;height:190px"><canvas id="rLsRev" role="img" aria-label="TP Revenue Mar 247k Apr 282k May 250k">Mar $247k Apr $282k May $250k</canvas></div>
+    </div>
+    <div class="cc">
+      <h3>Resolution time (hours) — lower is better</h3>
+      <div class="leg"><span><span class="dot" style="background:#1B2B4B"></span>Resolution hrs</span></div>
+      <div style="position:relative;height:190px"><canvas id="rLsRes" role="img" aria-label="Resolution hours Mar 114 Apr 54 May 63">Mar 114h Apr 54h May 63h</canvas></div>
+    </div>
+    <div class="cc">
+      <h3>Leases signed</h3>
+      <div class="leg"><span><span class="dot" style="background:#1B2B4B"></span>Leases</span></div>
+      <div style="position:relative;height:180px"><canvas id="rLsLse" role="img" aria-label="Leases Mar 214 Apr 234 May 234">Mar 214 Apr 234 May 234</canvas></div>
+    </div>
+    <div class="cc">
+      <h3>Leases per day vs goal (7)</h3>
+      <div class="leg"><span><span class="dot" style="background:#1B2B4B"></span>Actual</span><span><span class="dot" style="background:#FF6B35;opacity:.7"></span>Goal</span></div>
+      <div style="position:relative;height:180px"><canvas id="rLsLpd" role="img" aria-label="Leases per day vs goal Mar 6.9 Apr 7.8 May 7.5">Mar 6.9 Apr 7.8 May 7.5 goal 7</canvas></div>
+    </div>
+  </div>
+  <div class="sl">Operational changes</div>
+  <div class="two">
+    <div class="card">
+      <span class="badge blv">Live</span>
+      <h3>Process improvements</h3>
+      <div class="il">
+        <div class="it"><span class="it-icon">✓</span>Fully updated efficiency workflow</div>
+        <div class="it"><span class="it-icon">✓</span>Full lease signing process staged via Front Views</div>
+        <div class="it"><span class="it-icon">✓</span>Nick's AI Tool — fully deployed in Applications and Leasing</div>
+        <div class="it"><span class="it-icon">✓</span>Leasing/Apps Micro-Team Assignments Spreadsheet</div>
+      </div>
+      <div class="vc">
+        <div class="vt">Front views — lease stages</div>
+        <div class="vr"><span class="vr-num">01</span>Proposal</div>
+        <div class="vr"><span class="vr-num">02</span>Owner approves</div>
+        <div class="vr"><span class="vr-num">03</span>Tenant signatures</div>
+        <div class="vr"><span class="vr-num">04</span>Security deposit FU</div>
+        <div class="vr"><span class="vr-num">05</span>Countersign</div>
+        <div class="vr"><span class="vr-num">06</span>Call backs</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Efficiency impact</h3>
+      <div class="ib">Improved workflow clarity — no second guessing with assigned views and inboxes daily.</div>
+      <div class="ib">Quickly identify owners delaying lease requests. Specific team members assigned to this tag for follow-up focus.</div>
+      <div class="ib">AI tool freed the team to focus on lease signings, driving April's 52.6% resolution improvement. May ticked up +9h but held well below the March baseline and within department threshold. Team is smaller and now even more productive individually.</div>
+    </div>
+  </div>
+  <div class="sl">KPI thresholds</div>
+  <div class="kg">
+    <div class="ki"><div class="kt">Resolution output</div><div class="kd">15–20 resolutions/day (shifting from sent emails)</div></div>
+    <div class="ki"><div class="kt">Phone time</div><div class="kd">&lt; 6 hours per shift</div></div>
+    <div class="ki"><div class="kt">Leasing target</div><div class="kd">&lt; 7 leases per day</div></div>
+    <div class="ki"><div class="kt">Response time</div><div class="kd">&lt; 6 hours</div></div>
+    <div class="ki"><div class="kt">Monthly goal</div><div class="kd">200–250 leases</div></div>
+  </div>
+</div>
+
+<!-- ESCALATIONS -->
+<div id="escalations" class="section">
+  <div class="sec-head">
+    <div><h2>Escalations</h2><p>June 2026</p></div>
+  </div>
+  <div class="mg">
+    <div class="mc"><span class="lb">Response — past week</span><span class="vl">14h 51m</span><span class="sb">Goal: &lt;24h ✓</span></div>
+    <div class="mc"><span class="lb">CSAT — past 30 days</span><span class="vl">4.15</span><span class="dl neg">Below 4.4 goal</span></div>
+    <div class="mc"><span class="lb">CSAT all-time avg</span><span class="vl">4.4</span><span class="dl pos">On target</span></div>
+    <div class="mc"><span class="lb">May cancellations</span><span class="vl">244</span><span class="sb">162 + 19 + 63</span></div>
+  </div>
+  <div class="cg">
+    <div class="cc">
+      <h3>CSAT scores vs goal (4.4)</h3>
+      <div class="leg"><span><span class="dot" style="background:#1B2B4B"></span>Score</span><span><span class="dot" style="background:#FF6B35;opacity:.7"></span>Goal</span></div>
+      <div style="position:relative;height:200px"><canvas id="rEscCsat" role="img" aria-label="CSAT past week 4.27 past 30d 4.15 all time 4.4">Past week 4.27 Past 30d 4.15 All time 4.4</canvas></div>
+    </div>
+    <div class="cc">
+      <h3>Cancellations by income recorded</h3>
+      <div class="leg"><span><span class="dot" style="background:#C8D3E8"></span>$0</span><span><span class="dot" style="background:#2D4270"></span>$0–500</span><span><span class="dot" style="background:#00B894"></span>$500+</span></div>
+      <div style="position:relative;height:200px"><canvas id="rEscCan" role="img" aria-label="Cancellations by income Mar Apr May">$0 Mar 134 Apr 135 May 162</canvas></div>
+    </div>
+  </div>
+  <div class="sl">ZR reputation</div>
+  <div class="rg">
+    <div class="ri"><div class="rc">TrustPilot</div><div class="rs">4.5</div><div class="rr">558 reviews</div></div>
+    <div class="ri"><div class="rc">Zillow</div><div class="rs">4.9</div><div class="rr">404 reviews</div></div>
+    <div class="ri"><div class="rc">Google SF</div><div class="rs">4.7</div><div class="rr">426 reviews</div></div>
+    <div class="ri"><div class="rc">LA</div><div class="rs">4.8</div><div class="rr">Google</div></div>
+    <div class="ri"><div class="rc">OR</div><div class="rs">4.6</div><div class="rr">Google</div></div>
+    <div class="ri"><div class="rc">FL</div><div class="rs">4.9</div><div class="rr">Google</div></div>
+    <div class="ri"><div class="rc">TX</div><div class="rs">4.6</div><div class="rr">Google</div></div>
+    <div class="ri"><div class="rc">WA</div><div class="rs">4.3</div><div class="rr">Google</div></div>
+  </div>
+  <div class="sl">Workflow tools</div>
+  <div class="wg">
+    <div class="wi"><span class="badge blv">Live</span><div class="wt">Auto-Draft tag</div><div class="wd">Email reply draft + comment on related topic and next steps as a kick-off point.</div></div>
+    <div class="wi"><span class="badge blv">Live</span><div class="wt">Party Finder + Profile Review</div><div class="wd">Summarizes thread details, timeline, and provides easy party access.</div></div>
+    <div class="wi"><span class="badge blv">Live</span><div class="wt">Granola AI tool</div><div class="wd">Transcribes and summarizes calls — useful for lengthy escalation conversations.</div></div>
+    <div class="wi"><span class="badge blv">Live</span><div class="wt">CSAT — dept. specific</div><div class="wd">Internal ratings auto-notify managers on 1–3 star scores for use in evaluation.</div></div>
+  </div>
+  <div class="sl">Action plan</div>
+  <div class="wg">
+    <div class="wi"><div class="wt">Moodle / NotebookLM</div><div class="wd">Input information and context to improve AI knowledge of procedures.</div></div>
+    <div class="wi"><div class="wt">Google profiles</div><div class="wd">Maintain positive reviews and work on profiles below 4.5.</div></div>
+    <div class="wi"><div class="wt">Dept. collaboration</div><div class="wd">Continue collaboration with dept. managers on templates and escalated topic coverage.</div></div>
+  </div>
+</div>
+
+</main>
+
+<footer class="footer">
+  <p>Ziprent Operations &nbsp;·&nbsp; Efficiency update May 2026</p>
+  <p>* Partial month data as of 5/27</p>
+</footer>
+
+<script>
+var built = {};
+var M4 = ['Feb','Mar','Apr','May*'];
+var M3 = ['Mar','Apr','May'];
+
+var cd = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: { legend: { display: false } },
+  scales: {
+    x: { grid: { display: false }, border: { display: false }, ticks: { color: '#A0ABBE', font: { size: 11, family: "'Plus Jakarta Sans', sans-serif" }, autoSkip: false } },
+    y: { grid: { color: 'rgba(228,233,242,0.8)' }, border: { display: false }, ticks: { color: '#A0ABBE', font: { size: 11, family: "'Plus Jakarta Sans', sans-serif" } } }
+  }
+};
+
+function deepMerge(target, source) {
+  var out = Object.assign({}, target);
+  for (var key in source) {
+    if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+      out[key] = deepMerge(target[key] || {}, source[key]);
+    } else {
+      out[key] = source[key];
+    }
+  }
+  return out;
+}
+
+function mkBar(id, labels, datasets, yFmt) {
+  if (built[id]) return;
+  var ctx = document.getElementById(id);
+  if (!ctx) return;
+  var opts = JSON.parse(JSON.stringify(cd));
+  if (yFmt) opts.scales.y.ticks.callback = yFmt;
+  built[id] = new Chart(ctx, { type: 'bar', data: { labels: labels, datasets: datasets }, options: opts });
+}
+
+function mkLine(id, labels, datasets, yExtra) {
+  if (built[id]) return;
+  var ctx = document.getElementById(id);
+  if (!ctx) return;
+  var opts = JSON.parse(JSON.stringify(cd));
+  if (yExtra) Object.assign(opts.scales.y, yExtra);
+  built[id] = new Chart(ctx, { type: 'line', data: { labels: labels, datasets: datasets }, options: opts });
+}
+
+function b(color, data, r) { return { data: data, backgroundColor: color, borderRadius: r !== undefined ? r : 4, borderSkipped: false }; }
+
+function buildSection(s) {
+  if (s === 'relations') {
+    mkBar('rRelRes', M4, [b(['#C8D3E8','#C8D3E8','#1B2B4B','#FF9F6A'], [30,28,8.88,10.72])], function(v){ return v+'h'; });
+    mkBar('rRelRep', M4, [b(['#C8D3E8','#C8D3E8','#00B894','#FF9F6A'], [3.87,4.07,2.78,5.87])], function(v){ return v+'h'; });
+    mkBar('rRelConv', M4, [b('#C8D3E8', [17950,22497,21821,19049])]);
+  }
+  if (s === 'repairs') {
+    mkBar('rRepDone', M4, [b(['#C8D3E8','#C8D3E8','#1B2B4B','#FF9F6A'], [836,917,966,879])]);
+    mkBar('rRepAar', M4, [b(['#C8D3E8','#C8D3E8','#00B894','#FF9F6A'], [10390,9287,13306,9973])], function(v){ return '$'+(v/1000).toFixed(0)+'k'; });
+    mkLine('rRepRep', M4, [{ data:[16.25,15.58,13.32,18.62], borderColor:'#FF6B35', backgroundColor:'rgba(255,107,53,0.06)', fill:true, tension:.3, pointRadius:4, pointBackgroundColor:'#FF6B35', borderWidth:2 }]);
+  }
+  if (s === 'transitions') {
+    mkLine('rTrSD', M3, [{ data:[13.12,11.86,10.13], borderColor:'#1B2B4B', backgroundColor:'rgba(27,43,75,0.06)', fill:true, tension:.3, pointRadius:4, pointBackgroundColor:'#1B2B4B', borderWidth:2 }]);
+    mkBar('rTrRen', M3, [b('#1B2B4B',[214,234,227]), b('#C8D3E8',[289,234,218])]);
+  }
+  if (s === 'leasing') {
+    mkBar('rLsRev', M3, [b(['#C8D3E8','#00B894','#C8D3E8'],[247403,282029,250752])], function(v){ return '$'+(v/1000).toFixed(0)+'k'; });
+    mkBar('rLsRes', M3, [b(['#C8D3E8','#1B2B4B','#2D4270'],[114,54,63])], function(v){ return v+'h'; });
+    mkBar('rLsLse', M3, [b(['#C8D3E8','#1B2B4B','#1B2B4B'],[214,234,234])]);
+    mkLine('rLsLpd', M3, [
+      { data:[6.9,7.8,7.5], borderColor:'#1B2B4B', backgroundColor:'rgba(27,43,75,0.06)', fill:true, tension:.3, pointRadius:4, pointBackgroundColor:'#1B2B4B', borderWidth:2 },
+      { data:[7,7,7], borderColor:'#FF6B35', borderDash:[5,4], pointRadius:0, backgroundColor:'transparent', borderWidth:1.5 }
+    ], { min:6, max:8.5 });
+  }
+  if (s === 'escalations') {
+    if (!built['rEscCsat']) {
+      var ctx = document.getElementById('rEscCsat');
+      if (ctx) {
+        var opts = JSON.parse(JSON.stringify(cd));
+        opts.scales.y.min = 4.0;
+        opts.scales.y.max = 4.6;
+        opts.scales.y.ticks.stepSize = 0.1;
+        opts.scales.y.ticks.callback = function(v){ return v.toFixed(1); };
+        built['rEscCsat'] = new Chart(ctx, { type:'bar', data:{ labels:['Past week','Past 30d','All time'], datasets:[b(['#FF9F6A','#FF6B35','#00B894'],[4.27,4.15,4.4])] }, options:opts });
+      }
+    }
+    mkBar('rEscCan', M3, [b('#C8D3E8',[134,135,162]), b('#2D4270',[20,18,19]), b('#00B894',[59,68,63])]);
+  }
+}
+
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(function(s){ s.classList.remove('active'); });
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  setTimeout(function(){ buildSection(id); }, 50);
+}
+
+buildSection('relations');
+</script>
+</body>
+</html>

@@ -597,7 +597,7 @@ tbody tr:hover td { background: var(--navy-light); }
     <div class="mc"><span class="lb">PUM — May</span><span class="vl">4,247</span><span class="dl pos">▲ +3.1% vs Apr</span></div>
     <div class="mc"><span class="lb">New TP purchases — May</span><span class="vl">110</span><span class="dl pos">▲ +23.6% vs Mar</span></div>
     <div class="mc"><span class="lb">Best TP revenue</span><span class="vl">$282K</span><span class="sb">April</span></div>
-    <div class="mc"><span class="lb">Apr &amp; May leases</span><span class="vl">234</span><span class="dl pos">Held steady in May</span></div>
+    <div class="mc"><span class="lb">Best total placements</span><span class="vl">265</span><span class="sb">April · +1.5% vs Mar</span></div>
     <div class="mc"><span class="lb">Best leases/day</span><span class="vl">7.8</span><span class="sb">April · goal: 7/day</span></div>
     <div class="mc"><span class="lb">Best resolution</span><span class="vl">2d 6h</span><span class="sb">April · −52.6% vs Mar</span></div>
   </div>
@@ -629,14 +629,15 @@ tbody tr:hover td { background: var(--navy-light); }
   </div>
   <div class="tw">
     <table style="table-layout:fixed">
-      <colgroup><col style="width:12%"><col style="width:18%"><col style="width:18%"><col style="width:22%"><col style="width:15%"><col style="width:15%"></colgroup>
-      <thead><tr><th>Period</th><th>TP Revenue</th><th>Resolution time</th><th>MoM delta</th><th>Leases</th><th>Per day</th></tr></thead>
+      <colgroup><col style="width:10%"><col style="width:16%"><col style="width:16%"><col style="width:20%"><col style="width:10%"><col style="width:10%"><col style="width:10%"><col style="width:8%"></colgroup>
+      <thead><tr><th>Period</th><th>TP Revenue</th><th>Resolution time</th><th>MoM delta</th><th>Total TP</th><th>New TP</th><th>Renewal TP</th><th>New ZG</th></tr></thead>
       <tbody>
-        <tr><td>March</td><td>$247,403.78</td><td>4 days, 18 hours</td><td><span class="pill pneu">— baseline</span></td><td>214</td><td>6.9</td></tr>
-        <tr><td>April</td><td>$282,029.15</td><td>2 days, 6 hours</td><td><span class="pill ppos">▼ −60h (−52.6%)</span></td><td>234</td><td>7.8</td></tr>
-        <tr><td>May</td><td>$250,752.05</td><td>2 days, 15 hours</td><td><span class="pill pneg">▲ +9h (+16.7%)</span></td><td>234</td><td>7.5</td></tr>
+        <tr><td>March</td><td>$247,403.78</td><td>4 days, 18 hours</td><td><span class="pill pneu">— baseline</span></td><td>261</td><td>89</td><td>65</td><td>106*</td></tr>
+        <tr><td>April</td><td>$282,029.15</td><td>2 days, 6 hours</td><td><span class="pill ppos">▼ −60h (−52.6%)</span></td><td>265</td><td>118</td><td>100</td><td>45</td></tr>
+        <tr><td>May</td><td>$250,752.05</td><td>2 days, 15 hours</td><td><span class="pill pneg">▲ +9h (+16.7%)</span></td><td>255</td><td>110</td><td>81</td><td>63</td></tr>
       </tbody>
     </table>
+    <div style="padding:8px 16px;font-size:11px;color:#A0ABBE;border-top:1px solid #E4E9F2;">* March ZipGuarantee (106) includes a billing catch-up — not reflective of standard monthly volume.</div>
   </div>
   <div class="cg">
     <div class="cc">
@@ -650,14 +651,14 @@ tbody tr:hover td { background: var(--navy-light); }
       <div style="position:relative;height:190px"><canvas id="rLsRes" role="img" aria-label="Resolution hours Mar 114 Apr 54 May 63">Mar 114h Apr 54h May 63h</canvas></div>
     </div>
     <div class="cc">
-      <h3>Leases signed</h3>
-      <div class="leg"><span><span class="dot" style="background:#1B2B4B"></span>Leases</span></div>
-      <div style="position:relative;height:180px"><canvas id="rLsLse" role="img" aria-label="Leases Mar 214 Apr 234 May 234">Mar 214 Apr 234 May 234</canvas></div>
+      <h3>Total tenant placements (TP + ZipGuarantee)</h3>
+      <div class="leg"><span><span class="dot" style="background:#1B2B4B"></span>Total placements</span></div>
+      <div style="position:relative;height:180px"><canvas id="rLsLse" role="img" aria-label="Total placements Mar 261 Apr 265 May 255">Mar 261 Apr 265 May 255</canvas></div>
     </div>
     <div class="cc">
-      <h3>Leases per day vs goal (7)</h3>
+      <h3>Placements per day vs goal (7)</h3>
       <div class="leg"><span><span class="dot" style="background:#1B2B4B"></span>Actual</span><span><span class="dot" style="background:#FF6B35;opacity:.7"></span>Goal</span></div>
-      <div style="position:relative;height:180px"><canvas id="rLsLpd" role="img" aria-label="Leases per day vs goal Mar 6.9 Apr 7.8 May 7.5">Mar 6.9 Apr 7.8 May 7.5 goal 7</canvas></div>
+      <div style="position:relative;height:180px"><canvas id="rLsLpd" role="img" aria-label="Placements per day vs goal Mar 8.4 Apr 8.8 May 8.2">Mar 8.4 Apr 8.8 May 8.2 goal 7</canvas></div>
     </div>
   </div>
   <div class="sl">Operational changes</div>
@@ -722,7 +723,7 @@ tbody tr:hover td { background: var(--navy-light); }
     </div>
     <div class="card" style="background:var(--navy-light);border-color:var(--border);">
       <h3>Team note</h3>
-      <div class="ib" style="background:var(--white);">Headcount decreased from 19 to 16 in May with 1 additional staff member currently in training. Team is smaller and now more productive individually, maintaining 234 leases signed and 7.5 leases/day.</div>
+      <div class="ib" style="background:var(--white);">Headcount decreased from 19 to 16 in May with 1 additional staff member currently in training. Despite the smaller team, total placements held at 255 in May (8.2/day) — consistently above the 7/day goal all three months — demonstrating strong individual productivity gains.</div>
     </div>
   </div>
 </div>
@@ -954,11 +955,11 @@ function buildSection(s) {
     }
     mkBar('rLsRev', M3, [b(['#C8D3E8','#00B894','#C8D3E8'],[247403,282029,250752])], function(v){ return '$'+(v/1000).toFixed(0)+'k'; });
     mkBar('rLsRes', M3, [b(['#C8D3E8','#1B2B4B','#2D4270'],[114,54,63])], function(v){ return v+'h'; });
-    mkBar('rLsLse', M3, [b(['#C8D3E8','#1B2B4B','#1B2B4B'],[214,234,234])]);
+    mkBar('rLsLse', M3, [b(['#C8D3E8','#1B2B4B','#2D4270'],[261,265,255])]);
     mkLine('rLsLpd', M3, [
-      { data:[6.9,7.8,7.5], borderColor:'#1B2B4B', backgroundColor:'rgba(27,43,75,0.06)', fill:true, tension:.3, pointRadius:4, pointBackgroundColor:'#1B2B4B', borderWidth:2 },
+      { data:[8.4,8.8,8.2], borderColor:'#1B2B4B', backgroundColor:'rgba(27,43,75,0.06)', fill:true, tension:.3, pointRadius:4, pointBackgroundColor:'#1B2B4B', borderWidth:2 },
       { data:[7,7,7], borderColor:'#FF6B35', borderDash:[5,4], pointRadius:0, backgroundColor:'transparent', borderWidth:1.5 }
-    ], { min:6, max:8.5 });
+    ], { min:6, max:10 });
   }
   if (s === 'escalations') {
     // Response time MoM (converted to decimal hours)

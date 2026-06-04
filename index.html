@@ -224,6 +224,24 @@ tbody tr:hover td { background: var(--navy-light); }
 }
 .footer p { font-size: 12px; color: var(--hint); }
 
+/* COLLAB CARD */
+.collab-card { background: var(--navy); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem; }
+.collab-title { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.collab-body { font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 1.25rem; line-height: 1.6; }
+.collab-steps { display: flex; align-items: flex-start; gap: 8px; flex-wrap: wrap; }
+.collab-step { background: rgba(255,255,255,0.07); border-radius: var(--radius); padding: 1rem; flex: 1; min-width: 160px; display: flex; gap: 12px; align-items: flex-start; }
+.collab-step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--coral); color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.collab-step-title { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+.collab-step-desc { font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.5; }
+.collab-arrow { font-size: 18px; color: rgba(255,255,255,0.25); padding-top: 18px; flex-shrink: 0; }
+
+/* PIE LEGEND */
+.pie-leg { display: flex; flex-direction: column; gap: 4px; margin-top: 10px; }
+.pie-leg-row { display: flex; align-items: center; gap: 7px; font-size: 11px; color: var(--muted); }
+.pie-leg-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.pie-leg-label { flex: 1; }
+.pie-leg-val { font-weight: 600; color: var(--text); }
+
 @media (max-width: 640px) {
   .main { padding: 1rem; }
   .cg, .two { grid-template-columns: 1fr; }
@@ -231,7 +249,31 @@ tbody tr:hover td { background: var(--navy-light); }
   .header { padding: 0 1rem; }
   .tabs-bar { padding: 0 0.5rem; }
   .sec-head { flex-direction: column; align-items: flex-start; }
+  .collab-steps { flex-direction: column; }
+  .collab-arrow { display: none; }
 }
+.staff-count-row { display: flex; gap: 0; margin-bottom: 1.25rem; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.staff-month { flex: 1; padding: 0.875rem 1rem; background: var(--bg); display: flex; flex-direction: column; gap: 4px; border-right: 1px solid var(--border); }
+.staff-month:last-child { border-right: none; }
+.staff-mo { font-size: 11px; font-weight: 600; color: var(--hint); text-transform: uppercase; letter-spacing: 0.06em; }
+.staff-n { font-size: 28px; font-weight: 700; color: var(--navy); letter-spacing: -0.02em; line-height: 1; }
+.staff-note { font-size: 11px; color: var(--coral); font-weight: 500; margin-top: 2px; line-height: 1.4; }
+.perf-label { font-size: 11px; font-weight: 600; color: var(--hint); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+.perf-bar-wrap { margin-bottom: 12px; }
+.perf-bar { display: flex; height: 28px; border-radius: 6px; overflow: hidden; gap: 2px; }
+.perf-seg { display: flex; align-items: center; justify-content: center; transition: opacity 0.15s; }
+.perf-seg-label { font-size: 11px; font-weight: 600; color: #fff; white-space: nowrap; padding: 0 6px; }
+.perf-high { background: var(--teal); border-radius: 6px 0 0 6px; }
+.perf-solid { background: #2D4270; }
+.perf-low { background: var(--coral); border-radius: 0 6px 6px 0; }
+.perf-legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--muted); }
+.perf-legend span { display: flex; align-items: center; gap: 6px; }
+.perf-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+.perf-high-dot { background: var(--teal); }
+.perf-solid-dot { background: #2D4270; }
+.perf-low-dot { background: var(--coral); }
+
+
 </style>
 </head>
 <body>
@@ -260,9 +302,9 @@ tbody tr:hover td { background: var(--navy-light); }
     <div><h2>Relations Management</h2><p>*Partial month data as of 5/27</p></div>
   </div>
   <div class="mg">
-    <div class="mc"><span class="lb">Resolution — Apr</span><span class="vl">8h 53m</span><span class="dl pos">▼ from 1d 4h in Mar</span></div>
-    <div class="mc"><span class="lb">Resolution — May*</span><span class="vl">10h 43m</span><span class="dl neg">▲ outages + holidays</span></div>
-    <div class="mc"><span class="lb">Best reply time</span><span class="vl">2h 47m</span><span class="sb">April</span></div>
+    <div class="mc"><span class="lb">Resolution — Apr</span><span class="vl">8h 53m</span><span class="dl pos">▼ −68.3% vs Feb</span></div>
+    <div class="mc"><span class="lb">Resolution — May*</span><span class="vl">10h 43m</span><span class="dl neg">▲ +20.7% vs Apr</span></div>
+    <div class="mc"><span class="lb">Best reply time</span><span class="vl">2h 47m</span><span class="sb">April · −31.5% vs Feb</span></div>
     <div class="mc"><span class="lb">Peak conversations</span><span class="vl">22,497</span><span class="sb">March</span></div>
   </div>
   <div class="cg">
@@ -297,6 +339,28 @@ tbody tr:hover td { background: var(--navy-light); }
     <div class="wi"><span class="badge bwp">In progress</span><div class="wt">Appointment form</div><div class="wd">Owner→tenant availability sequence, removing the team as middleman.</div></div>
     <div class="wi"><span class="badge bwp">In progress</span><div class="wt">Better follow-up process</div><div class="wd">Stricter guidelines + automated follow-ups via Send Later, Tags, Rules.</div></div>
   </div>
+  <div class="sl">Staff</div>
+  <div class="two">
+    <div class="card">
+      <h3>Manager</h3>
+      <div class="staff-count-row">
+        <div class="staff-month"><span class="staff-mo">March</span><span class="staff-n">11</span></div>
+        <div class="staff-month"><span class="staff-mo">April</span><span class="staff-n">10</span></div>
+        <div class="staff-month"><span class="staff-mo">May</span><span class="staff-n">10</span></div>
+      </div>
+      <div class="perf-label">Performance breakdown — May · 10 total</div>
+      <div class="perf-bar-wrap">
+        <div class="perf-bar">
+          <div class="perf-seg perf-high" style="width:20%"><span class="perf-seg-label">High</span></div>
+          <div class="perf-seg perf-solid" style="width:80%; border-radius:0 6px 6px 0"><span class="perf-seg-label">Solid</span></div>
+        </div>
+      </div>
+      <div class="perf-legend">
+        <span><span class="perf-dot perf-high-dot"></span>🟢 High <strong>2 (20%)</strong></span>
+        <span><span class="perf-dot perf-solid-dot"></span>🟡 Solid <strong>8 (80%)</strong></span>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- REPAIRS -->
@@ -305,9 +369,9 @@ tbody tr:hover td { background: var(--navy-light); }
     <div><h2>Repairs Department</h2><p>*Partial month data as of 5/27</p></div>
   </div>
   <div class="mg">
-    <div class="mc"><span class="lb">Repairs done — Apr</span><span class="vl">966</span><span class="dl pos">▲ best month (32/day)</span></div>
-    <div class="mc"><span class="lb">Best reply time</span><span class="vl">13h 19m</span><span class="sb">April</span></div>
-    <div class="mc"><span class="lb">Best AAR</span><span class="vl">$13,306</span><span class="sb">April</span></div>
+    <div class="mc"><span class="lb">Repairs done — Apr</span><span class="vl">966</span><span class="dl pos">▲ +5.3% vs Mar</span></div>
+    <div class="mc"><span class="lb">Best reply time</span><span class="vl">13h 19m</span><span class="sb">April · −18.0% vs Feb</span></div>
+    <div class="mc"><span class="lb">Best AAR</span><span class="vl">$13,306</span><span class="sb">April · +43.3% vs Mar</span></div>
     <div class="mc"><span class="lb">Avg TTC — May*</span><span class="vl">20.79d</span><span class="sb">Partial month</span></div>
   </div>
   <div class="cg">
@@ -345,6 +409,31 @@ tbody tr:hover td { background: var(--navy-light); }
     <div class="wi"><span class="badge bwp">Planned</span><div class="wt">Repair sets</div><div class="wd">Primary thread for high-volume properties via Linked tag.</div></div>
     <div class="wi"><span class="badge bwp">Planned</span><div class="wt">Vendor SOS + follow-up tools</div><div class="wd">Automated outreach plus Follow-up Generator and Auto-Draft V2.</div></div>
   </div>
+
+  <div class="sl">Staff</div>
+  <div class="two">
+    <div class="card">
+      <h3>Repairs</h3>
+      <div class="staff-count-row">
+        <div class="staff-month"><span class="staff-mo">March</span><span class="staff-n">19</span></div>
+        <div class="staff-month"><span class="staff-mo">April</span><span class="staff-n">19</span></div>
+        <div class="staff-month"><span class="staff-mo">May</span><span class="staff-n">20</span></div>
+      </div>
+      <div class="perf-label">Performance breakdown — May · 20 total</div>
+      <div class="perf-bar-wrap">
+        <div class="perf-bar">
+          <div class="perf-seg perf-high" style="width:21%"><span class="perf-seg-label">High</span></div>
+          <div class="perf-seg perf-solid" style="width:63%"><span class="perf-seg-label">Solid</span></div>
+          <div class="perf-seg perf-low" style="width:16%"><span class="perf-seg-label">Low</span></div>
+        </div>
+      </div>
+      <div class="perf-legend">
+        <span><span class="perf-dot perf-high-dot"></span>🟢 High <strong>4 (21%)</strong></span>
+        <span><span class="perf-dot perf-solid-dot"></span>🟡 Solid <strong>13 (63%)</strong></span>
+        <span><span class="perf-dot perf-low-dot"></span>🔴 Low <strong>3 (16%)</strong></span>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- TRANSITIONS -->
@@ -354,10 +443,28 @@ tbody tr:hover td { background: var(--navy-light); }
   </div>
   <div class="mg">
     <div class="mc"><span class="lb">Turnovers Mar→May</span><span class="vl">−6.9%</span><span class="dl pos">Faster response</span></div>
-    <div class="mc"><span class="lb">Renewals Mar→May</span><span class="vl">+19.9%</span><span class="dl neg">Slower response</span></div>
     <div class="mc"><span class="lb">SD returns gain</span><span class="vl">22.8%</span><span class="dl pos">▼ 13.1 → 10.1 days</span></div>
     <div class="mc"><span class="lb">3-month revenue</span><span class="vl">$462K</span><span class="sb">Mar–May combined</span></div>
   </div>
+
+  <!-- METRICS TABLE -->
+  <div class="tw">
+    <table>
+      <thead><tr><th>Metric</th><th>March</th><th>April</th><th>May</th><th>Efficiency gain</th></tr></thead>
+      <tbody>
+        <tr><td>Turnovers Completed</td><td>79</td><td>78</td><td>115</td><td><span class="pill ppos">+45.6% Mar→May</span></td></tr>
+        <tr><td>Turnover Revenue</td><td>$71,632.00</td><td>$117,569.17</td><td>$96,532.00</td><td>—</td></tr>
+        <tr><td>Lease Renewals Signed</td><td>214</td><td>234</td><td>227</td><td>—</td></tr>
+        <tr><td>Renewal Revenue</td><td>$53,970.70</td><td>$53,350.00</td><td>$52,250.00</td><td>—</td></tr>
+        <tr><td>Renewal PMA Signed</td><td>289</td><td>234</td><td>218</td><td>—</td></tr>
+        <tr><td>SD Returns</td><td>13.12d</td><td>11.86d</td><td>10.13d</td><td><span class="pill ppos">22.8% faster</span></td></tr>
+        <tr><td>SD Calculation Sent</td><td>7.19d</td><td>6.27d</td><td>6.8d</td><td><span class="pill ppos">5.4% faster</span></td></tr>
+        <tr><td>Walkthrough Review</td><td>7h 24m</td><td>23h 48m</td><td>8h 34m</td><td><span class="pill pneg">15.8% slower</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- CHARTS -->
   <div class="cg">
     <div class="cc">
       <h3>SD returns (days) — lower is better</h3>
@@ -365,28 +472,119 @@ tbody tr:hover td { background: var(--navy-light); }
       <div style="position:relative;height:200px"><canvas id="rTrSD" role="img" aria-label="SD returns Mar 13.12 Apr 11.86 May 10.13">Mar 13.12d Apr 11.86d May 10.13d</canvas></div>
     </div>
     <div class="cc">
-      <h3>Renewals signed vs PMAs</h3>
-      <div class="leg"><span><span class="dot" style="background:#1B2B4B"></span>Signed</span><span><span class="dot" style="background:#C8D3E8"></span>PMAs</span></div>
-      <div style="position:relative;height:200px"><canvas id="rTrRen" role="img" aria-label="Renewals signed vs PMAs Mar Apr May">Signed Mar 214 Apr 234 May 227. PMAs Mar 289 Apr 234 May 218</canvas></div>
+      <h3>Turnovers completed</h3>
+      <div class="leg"><span><span class="dot" style="background:#1B2B4B"></span>Completed</span></div>
+      <div style="position:relative;height:200px"><canvas id="rTrTov" role="img" aria-label="Turnovers completed Mar 79 Apr 78 May 115">Mar 79 Apr 78 May 115</canvas></div>
+    </div>
+    <div class="cc">
+      <h3>Turnover revenue</h3>
+      <div class="leg"><span><span class="dot" style="background:#1B2B4B"></span>Revenue</span></div>
+      <div style="position:relative;height:200px"><canvas id="rTrTovRev" role="img" aria-label="Turnover revenue Mar 71632 Apr 117569 May 96532">Mar $71,632 Apr $117,569 May $96,532</canvas></div>
+    </div>
+    <div class="cc">
+      <h3>Lease renewals signed</h3>
+      <div class="leg"><span><span class="dot" style="background:#2D4270"></span>Renewals signed</span></div>
+      <div style="position:relative;height:200px"><canvas id="rTrRenSigned" role="img" aria-label="Renewals signed Mar 214 Apr 234 May 227">Mar 214 Apr 234 May 227</canvas></div>
+    </div>
+    <div class="cc">
+      <h3>Renewal revenue</h3>
+      <div class="leg"><span><span class="dot" style="background:#00B894"></span>Revenue</span></div>
+      <div style="position:relative;height:200px"><canvas id="rTrRenRev" role="img" aria-label="Renewal revenue Mar 53970 Apr 53350 May 52250">Mar $53,971 Apr $53,350 May $52,250</canvas></div>
+    </div>
+    <div class="cc">
+      <h3>Renewal PMA signed</h3>
+      <div class="leg"><span><span class="dot" style="background:#C8D3E8"></span>PMAs signed</span></div>
+      <div style="position:relative;height:200px"><canvas id="rTrPMA" role="img" aria-label="Renewal PMAs Mar 289 Apr 234 May 218">Mar 289 Apr 234 May 218</canvas></div>
     </div>
   </div>
-  <div class="tw">
-    <table>
-      <thead><tr><th>Metric</th><th>March</th><th>April</th><th>May</th><th>Efficiency gain</th></tr></thead>
-      <tbody>
-        <tr><td>SD Returns</td><td>13.12d</td><td>11.86d</td><td>10.13d</td><td><span class="pill ppos">22.8% faster</span></td></tr>
-        <tr><td>SD Calculation Sent</td><td>7.19d</td><td>6.27d</td><td>6.8d</td><td><span class="pill ppos">5.4% faster</span></td></tr>
-        <tr><td>Walkthrough Review</td><td>7h 24m</td><td>23h 48m</td><td>8h 34m</td><td><span class="pill pneg">15.8% slower</span></td></tr>
-        <tr><td>Renewals Signed</td><td>214</td><td>234</td><td>227</td><td>—</td></tr>
-        <tr><td>Renewal PMAs</td><td>289</td><td>234</td><td>218</td><td>—</td></tr>
-      </tbody>
-    </table>
-  </div>
+
   <div class="mg">
-    <div class="mc"><span class="lb">Turnovers peak</span><span class="vl">$80,124</span><span class="sb">April · 9% of ZR revenue</span></div>
-    <div class="mc"><span class="lb">Renewals peak</span><span class="vl">$57,966</span><span class="sb">April · 6% of ZR revenue</span></div>
-    <div class="mc"><span class="lb">Staff flagged</span><span class="vl">3</span><span class="dl pos">All improving</span></div>
-    <div class="mc"><span class="lb">Turnovers messages</span><span class="vl">1,534</span><span class="dl pos">▲ from 1,402</span></div>
+    <div class="mc"><span class="lb">Turnover revenue peak</span><span class="vl">$117,569</span><span class="sb">April</span></div>
+    <div class="mc"><span class="lb">Renewal revenue peak</span><span class="vl">$53,971</span><span class="sb">March</span></div>
+  </div>
+
+  <!-- OPERATIONAL CHANGES -->
+  <div class="sl">Operational changes &amp; automations</div>
+  <div class="wg">
+    <div class="wi">
+      <span class="badge blv">Live · Feb, ongoing</span>
+      <div class="wt">AI tools in Front / Google</div>
+      <div class="wd">Auto-Draft + Linked Tool adoption increasing. Walkthrough Review fully adopted with minimal issues. SD calc tool training in process.</div>
+    </div>
+    <div class="wi">
+      <span class="badge blv">Live · Feb–May 2026</span>
+      <div class="wt">Notebook LM</div>
+      <div class="wd">Increased staff independence and efficiency. Improved Autopilot knowledge for Residency Team. Expanded legal sources for both TT and ZR Notebook LMs.</div>
+    </div>
+    <div class="wi">
+      <span class="badge blv">Live · Dec 2025, ongoing</span>
+      <div class="wt">Cross-training program</div>
+      <div class="wd">Continuing to expand across the team. Turnovers staff actively supporting Renewals — now pushing for reciprocation.</div>
+    </div>
+    <div class="wi">
+      <span class="badge blv">Live · Feb 2, ongoing</span>
+      <div class="wt">Legal collaboration + Clio/Vincent</div>
+      <div class="wd">Established Clio/Vincent account for independent legal research through Jeanne. Supporting escalated cases, validating Autopilot procedure updates, and expanding trusted legal sources in Notebook LM.</div>
+    </div>
+  </div>
+  <div class="sl">In progress</div>
+  <div class="wg">
+    <div class="wi"><span class="badge bwp">In progress</span><div class="wt">Automating NONRs / NTVs</div><div class="wd">Increased efficiency through automated notice generation.</div></div>
+    <div class="wi"><span class="badge bwp">In progress</span><div class="wt">Auto-adding POS</div><div class="wd">From Lob + ABC Legal to dashboard.</div></div>
+    <div class="wi"><span class="badge bwp">In progress</span><div class="wt">Schedule optimization</div><div class="wd">Adjusted schedules to maximize peak hour coverage — ongoing.</div></div>
+    <div class="wi"><span class="badge bwp">In progress</span><div class="wt">Autopilot migration</div><div class="wd">Migrating current procedures to Autopilot and updating them where it makes sense.</div></div>
+  </div>
+
+  <!-- STAFF SECTION -->
+  <div class="sl">Staff</div>
+  <div class="two">
+
+    <!-- TURNOVERS STAFF -->
+    <div class="card">
+      <h3>Turnovers</h3>
+      <div class="staff-count-row">
+        <div class="staff-month"><span class="staff-mo">March</span><span class="staff-n">9</span></div>
+        <div class="staff-month"><span class="staff-mo">April</span><span class="staff-n">9</span></div>
+        <div class="staff-month"><span class="staff-mo">May</span><span class="staff-n">9</span><span class="staff-note">1 in training (replaced 1 let go)</span></div>
+      </div>
+      <div class="perf-label">Performance breakdown — May · 9 total</div>
+      <div class="perf-bar-wrap">
+        <div class="perf-bar">
+          <div class="perf-seg perf-high" style="width:44%"><span class="perf-seg-label">High</span></div>
+          <div class="perf-seg perf-solid" style="width:44%"><span class="perf-seg-label">Solid</span></div>
+          <div class="perf-seg perf-low" style="width:12%"><span class="perf-seg-label">Low</span></div>
+        </div>
+      </div>
+      <div class="perf-legend">
+        <span><span class="perf-dot perf-high-dot"></span>🟢 High <strong>4 (44%)</strong></span>
+        <span><span class="perf-dot perf-solid-dot"></span>🟡 Solid <strong>4 (44%)</strong></span>
+        <span><span class="perf-dot perf-low-dot"></span>🔴 Low <strong>1 (11%)</strong></span>
+      </div>
+    </div>
+
+    <!-- RENEWALS STAFF -->
+    <div class="card">
+      <h3>Renewals</h3>
+      <div class="staff-count-row">
+        <div class="staff-month"><span class="staff-mo">March</span><span class="staff-n">4</span></div>
+        <div class="staff-month"><span class="staff-mo">April</span><span class="staff-n">4</span></div>
+        <div class="staff-month"><span class="staff-mo">May</span><span class="staff-n">4</span></div>
+      </div>
+      <div class="perf-label">Performance breakdown — May · 4 total</div>
+      <div class="perf-bar-wrap">
+        <div class="perf-bar">
+          <div class="perf-seg perf-high" style="width:50%"><span class="perf-seg-label">High</span></div>
+          <div class="perf-seg perf-solid" style="width:25%"><span class="perf-seg-label">Solid</span></div>
+          <div class="perf-seg perf-low" style="width:25%"><span class="perf-seg-label">Low</span></div>
+        </div>
+      </div>
+      <div class="perf-legend">
+        <span><span class="perf-dot perf-high-dot"></span>🟢 High <strong>2 (50%)</strong></span>
+        <span><span class="perf-dot perf-solid-dot"></span>🟡 Solid <strong>1 (25%)</strong></span>
+        <span><span class="perf-dot perf-low-dot"></span>🔴 Low <strong>1 (25%)</strong></span>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -396,10 +594,38 @@ tbody tr:hover td { background: var(--navy-light); }
     <div><h2>Leasing</h2><p>May 2026</p></div>
   </div>
   <div class="mg">
+    <div class="mc"><span class="lb">PUM — May</span><span class="vl">4,247</span><span class="dl pos">▲ +3.1% vs Apr</span></div>
+    <div class="mc"><span class="lb">New TP purchases — May</span><span class="vl">110</span><span class="dl pos">▲ +23.6% vs Mar</span></div>
     <div class="mc"><span class="lb">Best TP revenue</span><span class="vl">$282K</span><span class="sb">April</span></div>
     <div class="mc"><span class="lb">Apr &amp; May leases</span><span class="vl">234</span><span class="dl pos">Held steady in May</span></div>
     <div class="mc"><span class="lb">Best leases/day</span><span class="vl">7.8</span><span class="sb">April · goal: 7/day</span></div>
     <div class="mc"><span class="lb">Best resolution</span><span class="vl">2d 6h</span><span class="sb">April · −52.6% vs Mar</span></div>
+  </div>
+
+  <!-- PUM + TP TABLE -->
+  <div class="tw">
+    <table>
+      <thead><tr><th>Period</th><th>PUM</th><th>PUM MoM</th><th>Total Purchases</th><th>Total TP</th><th>New TP</th><th>Renewal TP</th><th>New ZipGuarantee</th></tr></thead>
+      <tbody>
+        <tr><td>March</td><td>4,153</td><td><span class="pill pneu">— baseline</span></td><td>261</td><td>155</td><td>89</td><td>65</td><td>106</td></tr>
+        <tr><td>April</td><td>4,120</td><td><span class="pill pneg">▼ −0.8%</span></td><td>265</td><td>220</td><td>118</td><td>100</td><td>45</td></tr>
+        <tr><td>May</td><td>4,247</td><td><span class="pill ppos">▲ +3.1%</span></td><td>255</td><td>192</td><td>110</td><td>81</td><td>63</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TP BREAKDOWN CHARTS -->
+  <div class="cg">
+    <div class="cc">
+      <h3>PUM — properties under management</h3>
+      <div class="leg"><span><span class="dot" style="background:#1B2B4B"></span>PUM</span></div>
+      <div style="position:relative;height:190px"><canvas id="rLsPum" role="img" aria-label="PUM Mar 4153 Apr 4120 May 4247">Mar 4,153 Apr 4,120 May 4,247</canvas></div>
+    </div>
+    <div class="cc">
+      <h3>Tenant placement breakdown</h3>
+      <div class="leg"><span><span class="dot" style="background:#1B2B4B"></span>New TP</span><span><span class="dot" style="background:#2D4270"></span>Renewal TP</span><span><span class="dot" style="background:#00B894"></span>ZipGuarantee</span></div>
+      <div style="position:relative;height:190px"><canvas id="rLsTP" role="img" aria-label="TP breakdown Mar Apr May">New TP Mar 89 Apr 118 May 110. Renewal Mar 65 Apr 100 May 81. ZG Mar 106 Apr 45 May 63</canvas></div>
+    </div>
   </div>
   <div class="tw">
     <table style="table-layout:fixed">
@@ -442,7 +668,7 @@ tbody tr:hover td { background: var(--navy-light); }
       <div class="il">
         <div class="it"><span class="it-icon">✓</span>Fully updated efficiency workflow</div>
         <div class="it"><span class="it-icon">✓</span>Full lease signing process staged via Front Views</div>
-        <div class="it"><span class="it-icon">✓</span>Nick's AI Tool — fully deployed in Applications and Leasing</div>
+        <div class="it"><span class="it-icon">✓</span>Nick's AI Tool — Leasing Completed</div>
         <div class="it"><span class="it-icon">✓</span>Leasing/Apps Micro-Team Assignments Spreadsheet</div>
       </div>
       <div class="vc">
@@ -470,6 +696,35 @@ tbody tr:hover td { background: var(--navy-light); }
     <div class="ki"><div class="kt">Response time</div><div class="kd">&lt; 6 hours</div></div>
     <div class="ki"><div class="kt">Monthly goal</div><div class="kd">200–250 leases</div></div>
   </div>
+
+  <div class="sl">Staff</div>
+  <div class="two">
+    <div class="card">
+      <h3>Leasing team headcount</h3>
+      <div class="staff-count-row">
+        <div class="staff-month"><span class="staff-mo">March</span><span class="staff-n">19</span></div>
+        <div class="staff-month"><span class="staff-mo">April</span><span class="staff-n">19</span></div>
+        <div class="staff-month"><span class="staff-mo">May</span><span class="staff-n">16</span><span class="staff-note">+ 1 in training</span></div>
+      </div>
+      <div class="perf-label">Performance breakdown — May · 16 total</div>
+      <div class="perf-bar-wrap">
+        <div class="perf-bar">
+          <div class="perf-seg perf-high" style="width:16%"><span class="perf-seg-label">High</span></div>
+          <div class="perf-seg perf-solid" style="width:68%"><span class="perf-seg-label">Solid</span></div>
+          <div class="perf-seg perf-low" style="width:16%"><span class="perf-seg-label">Low</span></div>
+        </div>
+      </div>
+      <div class="perf-legend">
+        <span><span class="perf-dot perf-high-dot"></span>🟢 High <strong>3 (16%)</strong></span>
+        <span><span class="perf-dot perf-solid-dot"></span>🟡 Solid <strong>11 (68%)</strong></span>
+        <span><span class="perf-dot perf-low-dot"></span>🔴 Low <strong>2 (16%)</strong></span>
+      </div>
+    </div>
+    <div class="card" style="background:var(--navy-light);border-color:var(--border);">
+      <h3>Team note</h3>
+      <div class="ib" style="background:var(--white);">Headcount decreased from 19 to 16 in May with 1 additional staff member currently in training. Team is smaller and now more productive individually, maintaining 234 leases signed and 7.5 leases/day.</div>
+    </div>
+  </div>
 </div>
 
 <!-- ESCALATIONS -->
@@ -477,24 +732,71 @@ tbody tr:hover td { background: var(--navy-light); }
   <div class="sec-head">
     <div><h2>Escalations</h2><p>June 2026</p></div>
   </div>
+
+  <!-- TOP METRIC CARDS -->
   <div class="mg">
     <div class="mc"><span class="lb">Response — past week</span><span class="vl">14h 51m</span><span class="sb">Goal: &lt;24h ✓</span></div>
-    <div class="mc"><span class="lb">CSAT — past 30 days</span><span class="vl">4.15</span><span class="dl neg">Below 4.4 goal</span></div>
     <div class="mc"><span class="lb">CSAT all-time avg</span><span class="vl">4.4</span><span class="dl pos">On target</span></div>
-    <div class="mc"><span class="lb">May cancellations</span><span class="vl">244</span><span class="sb">162 + 19 + 63</span></div>
+    <div class="mc"><span class="lb">May new conversations</span><span class="vl">751</span><span class="dl pos">▲ +5.2% vs Mar</span></div>
+    <div class="mc"><span class="lb">Best response time</span><span class="vl">18h 5m</span><span class="sb">May · −7.1% vs Mar</span></div>
   </div>
+
+  <!-- RESPONSE TIME MOM + NEW CONVERSATIONS -->
+  <div class="sl">Response time &amp; volume — month over month</div>
   <div class="cg">
     <div class="cc">
-      <h3>CSAT scores vs goal (4.4)</h3>
-      <div class="leg"><span><span class="dot" style="background:#1B2B4B"></span>Score</span><span><span class="dot" style="background:#FF6B35;opacity:.7"></span>Goal</span></div>
-      <div style="position:relative;height:200px"><canvas id="rEscCsat" role="img" aria-label="CSAT past week 4.27 past 30d 4.15 all time 4.4">Past week 4.27 Past 30d 4.15 All time 4.4</canvas></div>
+      <h3>Avg response time (hours) — lower is better</h3>
+      <div class="leg"><span><span class="dot" style="background:#1B2B4B"></span>Response time</span></div>
+      <div style="position:relative;height:200px"><canvas id="rEscResp" role="img" aria-label="Response time Mar 19.35h Apr 21.87h May 18.08h">Mar 19h21m Apr 21h52m May 18h5m</canvas></div>
     </div>
     <div class="cc">
-      <h3>Cancellations by income recorded</h3>
-      <div class="leg"><span><span class="dot" style="background:#C8D3E8"></span>$0</span><span><span class="dot" style="background:#2D4270"></span>$0–500</span><span><span class="dot" style="background:#00B894"></span>$500+</span></div>
-      <div style="position:relative;height:200px"><canvas id="rEscCan" role="img" aria-label="Cancellations by income Mar Apr May">$0 Mar 134 Apr 135 May 162</canvas></div>
+      <h3>New conversations</h3>
+      <div class="leg"><span><span class="dot" style="background:#2D4270"></span>Conversations</span></div>
+      <div style="position:relative;height:200px"><canvas id="rEscConv" role="img" aria-label="New conversations Mar 714 Apr 719 May 751">Mar 714 Apr 719 May 751</canvas></div>
     </div>
   </div>
+
+  <!-- INTERNAL CSAT -->
+  <div class="sl">Internal CSAT ratings</div>
+  <div class="cg">
+    <div class="cc">
+      <h3>Avg rating by month</h3>
+      <div class="leg"><span><span class="dot" style="background:#1B2B4B"></span>Avg rating</span><span><span class="dot" style="background:#FF6B35;opacity:.6"></span>Target (4.4)</span></div>
+      <div style="position:relative;height:200px"><canvas id="rEscCsatLine" role="img" aria-label="CSAT Mar 4.28 Apr 4.29 May 4.16 Jun 4.32">Mar 4.28 Apr 4.29 May 4.16 Jun 4.32</canvas></div>
+    </div>
+    <div class="cc">
+      <h3>Review count by month</h3>
+      <div class="leg"><span><span class="dot" style="background:#2D4270"></span>Reviews</span></div>
+      <div style="position:relative;height:200px"><canvas id="rEscReviews" role="img" aria-label="Review count Mar 2491 Apr 2673 May 2672 Jun 406">Mar 2,491 Apr 2,673 May 2,672 Jun 406</canvas></div>
+    </div>
+    <div class="cc full">
+      <h3>% 5-star reviews by month</h3>
+      <div class="leg"><span><span class="dot" style="background:#00B894"></span>% 5 star</span></div>
+      <div style="position:relative;height:160px"><canvas id="rEscFiveStar" role="img" aria-label="Pct 5 star Mar 16.34 Apr 15.97 May 14.45 Jun 14.53">Mar 16.34% Apr 15.97% May 14.45% Jun 14.53%</canvas></div>
+    </div>
+  </div>
+
+  <!-- CANCELLATIONS PIE CHARTS -->
+  <div class="sl">Customer cancellations — $500+ income recorded (Mar–May)</div>
+  <div class="cg three" style="grid-template-columns:1fr 1fr 1fr">
+    <div class="cc">
+      <h3>March — 53 cancellations</h3>
+      <div style="position:relative;height:220px"><canvas id="rEscPieMar" role="img" aria-label="March cancellation reasons">Mar cancellations by reason</canvas></div>
+      <div id="rEscPieMarLeg" class="pie-leg"></div>
+    </div>
+    <div class="cc">
+      <h3>April — 60 cancellations</h3>
+      <div style="position:relative;height:220px"><canvas id="rEscPieApr" role="img" aria-label="April cancellation reasons">Apr cancellations by reason</canvas></div>
+      <div id="rEscPieAprLeg" class="pie-leg"></div>
+    </div>
+    <div class="cc">
+      <h3>May — 64 cancellations</h3>
+      <div style="position:relative;height:220px"><canvas id="rEscPieMay" role="img" aria-label="May cancellation reasons">May cancellations by reason</canvas></div>
+      <div id="rEscPieMayLeg" class="pie-leg"></div>
+    </div>
+  </div>
+
+  <!-- ZR REPUTATION -->
   <div class="sl">ZR reputation</div>
   <div class="rg">
     <div class="ri"><div class="rc">TrustPilot</div><div class="rs">4.5</div><div class="rr">558 reviews</div></div>
@@ -506,6 +808,8 @@ tbody tr:hover td { background: var(--navy-light); }
     <div class="ri"><div class="rc">TX</div><div class="rs">4.6</div><div class="rr">Google</div></div>
     <div class="ri"><div class="rc">WA</div><div class="rs">4.3</div><div class="rr">Google</div></div>
   </div>
+
+  <!-- WORKFLOW TOOLS -->
   <div class="sl">Workflow tools</div>
   <div class="wg">
     <div class="wi"><span class="badge blv">Live</span><div class="wt">Auto-Draft tag</div><div class="wd">Email reply draft + comment on related topic and next steps as a kick-off point.</div></div>
@@ -513,12 +817,53 @@ tbody tr:hover td { background: var(--navy-light); }
     <div class="wi"><span class="badge blv">Live</span><div class="wt">Granola AI tool</div><div class="wd">Transcribes and summarizes calls — useful for lengthy escalation conversations.</div></div>
     <div class="wi"><span class="badge blv">Live</span><div class="wt">CSAT — dept. specific</div><div class="wd">Internal ratings auto-notify managers on 1–3 star scores for use in evaluation.</div></div>
   </div>
+
+  <!-- ACTION PLAN -->
   <div class="sl">Action plan</div>
   <div class="wg">
     <div class="wi"><div class="wt">Moodle / NotebookLM</div><div class="wd">Input information and context to improve AI knowledge of procedures.</div></div>
     <div class="wi"><div class="wt">Google profiles</div><div class="wd">Maintain positive reviews and work on profiles below 4.5.</div></div>
-    <div class="wi"><div class="wt">Dept. collaboration</div><div class="wd">Continue collaboration with dept. managers on templates and escalated topic coverage.</div></div>
   </div>
+  <div class="collab-card">
+    <div class="collab-title">Department collaboration — escalation triage structure</div>
+    <div class="collab-body">
+      We have made deliberate efforts to have departments handle escalated issues in a structured, tiered fashion rather than defaulting to Escalations immediately. The process works as follows:
+    </div>
+    <div class="collab-steps">
+      <div class="collab-step">
+        <div class="collab-step-num">1</div>
+        <div class="collab-step-content">
+          <div class="collab-step-title">Issue surfaces</div>
+          <div class="collab-step-desc">An escalated issue is identified within the relevant department.</div>
+        </div>
+      </div>
+      <div class="collab-arrow">→</div>
+      <div class="collab-step">
+        <div class="collab-step-num">2</div>
+        <div class="collab-step-content">
+          <div class="collab-step-title">Team Lead reviews &amp; de-escalates</div>
+          <div class="collab-step-desc">The Team Lead is the first line of defense — reviews the situation and attempts to de-escalate directly.</div>
+        </div>
+      </div>
+      <div class="collab-arrow">→</div>
+      <div class="collab-step">
+        <div class="collab-step-num">3</div>
+        <div class="collab-step-content">
+          <div class="collab-step-title">Department Manager judgment call</div>
+          <div class="collab-step-desc">If unresolved, it escalates to the Department Manager who assesses severity and determines next steps.</div>
+        </div>
+      </div>
+      <div class="collab-arrow">→</div>
+      <div class="collab-step">
+        <div class="collab-step-num">4</div>
+        <div class="collab-step-content">
+          <div class="collab-step-title">Josh (Escalations) — last line of defense</div>
+          <div class="collab-step-desc">Only if the issue remains unresolved does the Department Manager loop in Josh from Escalations as the final escalation point.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 </main>
@@ -588,9 +933,25 @@ function buildSection(s) {
   }
   if (s === 'transitions') {
     mkLine('rTrSD', M3, [{ data:[13.12,11.86,10.13], borderColor:'#1B2B4B', backgroundColor:'rgba(27,43,75,0.06)', fill:true, tension:.3, pointRadius:4, pointBackgroundColor:'#1B2B4B', borderWidth:2 }]);
-    mkBar('rTrRen', M3, [b('#1B2B4B',[214,234,227]), b('#C8D3E8',[289,234,218])]);
+    mkBar('rTrTov', M3, [b(['#C8D3E8','#C8D3E8','#1B2B4B'],[79,78,115])]);
+    mkBar('rTrTovRev', M3, [b(['#C8D3E8','#1B2B4B','#2D4270'],[71632,117569,96532])], function(v){ return '$'+(v/1000).toFixed(0)+'k'; });
+    mkBar('rTrRenSigned', M3, [b(['#C8D3E8','#2D4270','#2D4270'],[214,234,227])]);
+    mkBar('rTrRenRev', M3, [b(['#00B894','#00B894','#00B894'],[53970,53350,52250])], function(v){ return '$'+(v/1000).toFixed(0)+'k'; });
+    mkBar('rTrPMA', M3, [b('#C8D3E8',[289,234,218])]);
   }
   if (s === 'leasing') {
+    mkBar('rLsPum', M3, [b(['#C8D3E8','#C8D3E8','#1B2B4B'],[4153,4120,4247])]);
+    if (!built['rLsTP']) {
+      var ctx = document.getElementById('rLsTP');
+      if (ctx) {
+        var opts = JSON.parse(JSON.stringify(cd));
+        built['rLsTP'] = new Chart(ctx, { type:'bar', data:{ labels:M3, datasets:[
+          { data:[89,118,110], backgroundColor:'#1B2B4B', label:'New TP', borderRadius:3, stack:'s' },
+          { data:[65,100,81], backgroundColor:'#2D4270', label:'Renewal TP', borderRadius:0, stack:'s' },
+          { data:[106,45,63], backgroundColor:'#00B894', label:'ZipGuarantee', borderRadius:3, stack:'s' }
+        ]}, options:opts });
+      }
+    }
     mkBar('rLsRev', M3, [b(['#C8D3E8','#00B894','#C8D3E8'],[247403,282029,250752])], function(v){ return '$'+(v/1000).toFixed(0)+'k'; });
     mkBar('rLsRes', M3, [b(['#C8D3E8','#1B2B4B','#2D4270'],[114,54,63])], function(v){ return v+'h'; });
     mkBar('rLsLse', M3, [b(['#C8D3E8','#1B2B4B','#1B2B4B'],[214,234,234])]);
@@ -600,18 +961,63 @@ function buildSection(s) {
     ], { min:6, max:8.5 });
   }
   if (s === 'escalations') {
-    if (!built['rEscCsat']) {
-      var ctx = document.getElementById('rEscCsat');
+    // Response time MoM (converted to decimal hours)
+    mkBar('rEscResp', M3, [b(['#C8D3E8','#C8D3E8','#1B2B4B'],[19.35,21.87,18.08])], function(v){ return v+'h'; });
+    // New conversations
+    mkBar('rEscConv', M3, [b(['#C8D3E8','#C8D3E8','#2D4270'],[714,719,751])]);
+
+    // CSAT avg rating line — 4 months including Jun
+    var M4esc = ['Mar','Apr','May','Jun'];
+    if (!built['rEscCsatLine']) {
+      var ctx = document.getElementById('rEscCsatLine');
       if (ctx) {
         var opts = JSON.parse(JSON.stringify(cd));
-        opts.scales.y.min = 4.0;
-        opts.scales.y.max = 4.6;
-        opts.scales.y.ticks.stepSize = 0.1;
-        opts.scales.y.ticks.callback = function(v){ return v.toFixed(1); };
-        built['rEscCsat'] = new Chart(ctx, { type:'bar', data:{ labels:['Past week','Past 30d','All time'], datasets:[b(['#FF9F6A','#FF6B35','#00B894'],[4.27,4.15,4.4])] }, options:opts });
+        opts.scales.y.min = 4.0; opts.scales.y.max = 4.5;
+        opts.scales.y.ticks.callback = function(v){ return v.toFixed(2); };
+        built['rEscCsatLine'] = new Chart(ctx, { type:'line', data:{ labels:M4esc, datasets:[
+          { data:[4.28,4.29,4.16,4.32], borderColor:'#1B2B4B', backgroundColor:'rgba(27,43,75,0.06)', fill:true, tension:.3, pointRadius:4, pointBackgroundColor:'#1B2B4B', borderWidth:2 },
+          { data:[4.4,4.4,4.4,4.4], borderColor:'#FF6B35', borderDash:[5,4], pointRadius:0, backgroundColor:'transparent', borderWidth:1.5 }
+        ]}, options:opts });
       }
     }
-    mkBar('rEscCan', M3, [b('#C8D3E8',[134,135,162]), b('#2D4270',[20,18,19]), b('#00B894',[59,68,63])]);
+    mkBar('rEscReviews', M4esc, [b(['#C8D3E8','#2D4270','#2D4270','#C8D3E8'],[2491,2673,2672,406])]);
+    if (!built['rEscFiveStar']) {
+      var ctx2 = document.getElementById('rEscFiveStar');
+      if (ctx2) {
+        var opts2 = JSON.parse(JSON.stringify(cd));
+        opts2.scales.y.ticks.callback = function(v){ return v+'%'; };
+        built['rEscFiveStar'] = new Chart(ctx2, { type:'line', data:{ labels:M4esc, datasets:[
+          { data:[16.34,15.97,14.45,14.53], borderColor:'#00B894', backgroundColor:'rgba(0,184,148,0.06)', fill:true, tension:.3, pointRadius:4, pointBackgroundColor:'#00B894', borderWidth:2 }
+        ]}, options:opts2 });
+      }
+    }
+
+    // Cancellation pie charts — $500+ reasons, Mar/Apr/May
+    var PIE_COLORS = ['#1B2B4B','#2D4270','#4A6FA5','#00B894','#FF6B35','#FF9F6A','#A0ABBE','#C8D3E8'];
+    var reasons = ['service_related','owner_selling','owner_moving_in','non_service_related','app_canceled','ziprent_canceled','priced_too_high','owner_self_manage'];
+    var labels  = ['Service related','Owner selling','Owner moving in','Non-service related','App canceled','Ziprent canceled','Priced too high','Owner self manage'];
+    var marData = [9,23,4,15,2,0,0,0];   // Mar (red box col 5)
+    var aprData = [9,23,5,17,4,0,0,2];   // Apr (red box col 6)
+    var mayData = [3,18,11,14,9,0,0,9];  // May (red box col 7)
+
+    function buildPie(id, legId, data, title) {
+      if (built[id]) return;
+      var ctx3 = document.getElementById(id);
+      if (!ctx3) return;
+      var filtered = reasons.map(function(_,i){ return {label:labels[i],val:data[i],color:PIE_COLORS[i]}; }).filter(function(r){ return r.val > 0; });
+      built[id] = new Chart(ctx3, {
+        type:'doughnut',
+        data:{ labels:filtered.map(function(r){return r.label;}), datasets:[{ data:filtered.map(function(r){return r.val;}), backgroundColor:filtered.map(function(r){return r.color;}), borderWidth:2, borderColor:'#F7F8FC', hoverOffset:4 }]},
+        options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label:function(ctx4){ return ' '+ctx4.label+': '+ctx4.parsed; } } } } }
+      });
+      var leg = document.getElementById(legId);
+      if (leg) {
+        leg.innerHTML = filtered.map(function(r){ return '<div class="pie-leg-row"><span class="pie-leg-dot" style="background:'+r.color+'"></span><span class="pie-leg-label">'+r.label+'</span><span class="pie-leg-val">'+r.val+'</span></div>'; }).join('');
+      }
+    }
+    buildPie('rEscPieMar','rEscPieMarLeg',marData,'March');
+    buildPie('rEscPieApr','rEscPieAprLeg',aprData,'April');
+    buildPie('rEscPieMay','rEscPieMayLeg',mayData,'May');
   }
 }
 
